@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   Param,
   Patch,
   Post,
@@ -19,19 +20,31 @@ export class UomController {
   @Get('/')
   @HttpCode(200)
   public async getUoms(): Promise<Uom[]> {
-    return this.uomService.getUoms();
+    try {
+      return this.uomService.getUoms();
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 
   @Post('/')
   @HttpCode(201)
   public async createUom(@Body() uomCreateRequestDto: UomCreateRequestDto) {
-    return this.uomService.createUom(uomCreateRequestDto);
+    try {
+      return this.uomService.createUom(uomCreateRequestDto);
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 
   @Get('/:id')
   @HttpCode(200)
   public async getUom(@Param('id') id: string): Promise<Uom> {
-    return this.uomService.getUom(id);
+    try {
+      return this.uomService.getUom(id);
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 
   @Patch('/:id')
@@ -40,12 +53,20 @@ export class UomController {
     @Param('id') id: string,
     @Body() uomUpdateRequestDto: UomUpdateRequestDto,
   ): Promise<Uom> {
-    return this.uomService.updateUom(id, uomUpdateRequestDto);
+    try {
+      return this.uomService.updateUom(id, uomUpdateRequestDto);
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 
   @Delete('/:id')
   @HttpCode(200)
   public async deleteUom(@Param('id') id: string): Promise<Uom> {
-    return this.uomService.deleteUom(id);
+    try {
+      return this.uomService.deleteUom(id);
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 }
