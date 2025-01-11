@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UomModule } from './uom/uom.module';
-import { UomEntity } from './uom/repository/uom.entity';
+import { Uom } from './uom/repository/uom.entity';
 import { CustomerModule } from './customer/customer.module';
 import { Customer } from './customer/repository/customer.entity';
+import { VendorModule } from './vendor/vendor.module';
+import { Vendor } from './vendor/respository/vendor.entity';
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -12,7 +14,7 @@ const dbConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USER || 'admin',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'stockalytics_db',
-  entities: [UomEntity, Customer],
+  entities: [Uom, Customer, Vendor],
   synchronize: true,
 };
 
@@ -23,6 +25,7 @@ const dbConfig: TypeOrmModuleOptions = {
     }),
     UomModule,
     CustomerModule,
+    VendorModule,
   ],
   controllers: [],
   providers: [],
