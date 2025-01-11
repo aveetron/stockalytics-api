@@ -9,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { UomService } from './uom.service';
-import { UomEntity } from './repository/uom.entity';
+import { Uom } from './repository/uom.entity';
 import { UomCreateRequestDto, UomUpdateRequestDto } from './dto/request.dto';
 
 @Controller('uom')
@@ -18,7 +18,7 @@ export class UomController {
 
   @Get('/')
   @HttpCode(200)
-  public async getUoms(): Promise<UomEntity[]> {
+  public async getUoms(): Promise<Uom[]> {
     return this.uomService.getUoms();
   }
 
@@ -30,7 +30,7 @@ export class UomController {
 
   @Get('/:id')
   @HttpCode(200)
-  public async getUom(@Param('id') id: string): Promise<UomEntity> {
+  public async getUom(@Param('id') id: string): Promise<Uom> {
     return this.uomService.getUom(id);
   }
 
@@ -39,13 +39,13 @@ export class UomController {
   public async updateUom(
     @Param('id') id: string,
     @Body() uomUpdateRequestDto: UomUpdateRequestDto,
-  ): Promise<UomEntity> {
+  ): Promise<Uom> {
     return this.uomService.updateUom(id, uomUpdateRequestDto);
   }
 
   @Delete('/:id')
   @HttpCode(200)
-  public async deleteUom(@Param('id') id: string): Promise<UomEntity> {
+  public async deleteUom(@Param('id') id: string): Promise<Uom> {
     return this.uomService.deleteUom(id);
   }
 }
