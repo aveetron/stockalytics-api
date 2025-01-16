@@ -19,10 +19,12 @@ const dbConfig: TypeOrmModuleOptions = {
 };
 
 @Module({
+  // database config
   imports: [
     TypeOrmModule.forRoot({
       ...dbConfig,
     }),
+    // modules config
     UomModule,
     CustomerModule,
     VendorModule,

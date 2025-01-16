@@ -33,6 +33,7 @@ export class UomController {
     try {
       return this.uomService.createUom(uomCreateRequestDto);
     } catch (error) {
+      console.log(error);
       throw new HttpException(error.message, 400);
     }
   }
