@@ -1,6 +1,18 @@
-import { Controller, Delete, Get, HttpCode, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoryCreateRequestDto } from './dto/request.dto';
+import {
+  CategoryCreateRequestDto,
+  CategoryUpdateRequestDto,
+} from './dto/request.dto';
 import { Category } from './repository/category.entity';
 
 @Controller('category')
@@ -16,26 +28,29 @@ export class CategoryController {
   @Post('/')
   @HttpCode(201)
   async createCategory(
-    categoryCreateRequestDto: CategoryCreateRequestDto,
+    @Body() categoryCreateRequestDto: CategoryCreateRequestDto,
   ): Promise<Category> {
     return this.categoryService.createCategory(categoryCreateRequestDto);
   }
 
   @Get('/:id')
   @HttpCode(200)
-  async getCategory(id: string): Promise<Category> {
+  async getCategory(@Param('id') id: string): Promise<Category> {
     return this.categoryService.getCategory(id);
   }
 
   @Put('/:id')
   @HttpCode(200)
-  async updateCategory(id: string, category: any): Promise<Category> {
-    return this.categoryService.updateCategory(id, category);
+  async updateCategory(
+    @Param('id') id: string,
+    @Body() categoryUpdateRequestDto: CategoryUpdateRequestDto,
+  ): Promise<Category> {
+    return this.categoryService.updateCategory(id, categoryUpdateRequestDto);
   }
 
   @Delete('/:id')
   @HttpCode(200)
-  async deleteCategory(id: string): Promise<void> {
+  async deleteCategory(@Param('id') id: string): Promise<void> {
     return this.categoryService.deleteCategory(id);
   }
 }

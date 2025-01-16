@@ -29,7 +29,11 @@ export class CategoryService {
     id: string,
     categoryCreateRequestDto: CategoryCreateRequestDto,
   ): Promise<Category> {
-    return this.categoryRepository.save({ ...categoryCreateRequestDto, id });
+    const category = await this.categoryRepository.findOneBy({ id });
+    category.name = categoryCreateRequestDto?.name;
+    category.description = categoryCreateRequestDto?.description;
+    await this.categoryRepository.save(category);
+    return this.categoryRepository.findOneBy({ id });
   }
 
   async deleteCategory(id: string): Promise<void> {
