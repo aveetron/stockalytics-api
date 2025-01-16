@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Item } from 'src/item/repository/item.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Uom {
@@ -7,4 +8,7 @@ export class Uom {
 
   @Column({ unique: true })
   name: string;
+
+  @OneToMany(() => Item, (item) => item.uom)
+  items: Item[];
 }
