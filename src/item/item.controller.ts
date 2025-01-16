@@ -1,8 +1,16 @@
-import { Controller, Delete, Get, HttpCode, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ItemService } from './item.service';
 import { Item } from './repository/item.entity';
 import { ItemCreateRequestDto, ItemUpdateRequestDto } from './dto/request.dto';
-import { UpdateResult } from 'typeorm';
 
 @Controller('item')
 export class ItemController {
@@ -29,9 +37,9 @@ export class ItemController {
   @Put('/:id')
   @HttpCode(200)
   async updateItem(
-    id: string,
-    itemUpdateRequestDto: ItemUpdateRequestDto,
-  ): Promise<UpdateResult> {
+    @Param('id') id: string,
+    @Body() itemUpdateRequestDto: ItemUpdateRequestDto,
+  ): Promise<Item> {
     return this.itemService.updateItem(id, itemUpdateRequestDto);
   }
 

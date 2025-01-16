@@ -23,7 +23,7 @@ export class ItemService {
   }
 
   async updateItem(id: string, itemUpdateRequestDto: ItemUpdateRequestDto) {
-    return this.itemRepository.update(id, itemUpdateRequestDto);
+    return this.itemRepository.save({ ...itemUpdateRequestDto, id });
   }
 
   async deleteItem(id: string): Promise<void> {
