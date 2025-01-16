@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { UomService } from './uom.service';
 import { Uom } from './repository/uom.entity';
@@ -19,8 +20,11 @@ export class UomController {
 
   @Get('/')
   @HttpCode(200)
-  public async getUoms(): Promise<Uom[]> {
+  public async getUoms(@Query('name') name: string): Promise<Uom[]> {
     try {
+      if (name) {
+        return this.uomService.getUomsByName(name);
+      }
       return this.uomService.getUoms();
     } catch (error) {
       throw new HttpException(error.message, 400);

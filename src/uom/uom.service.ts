@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Uom } from './repository/uom.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { UomCreateRequestDto, UomUpdateRequestDto } from './dto/request.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -13,6 +13,12 @@ export class UomService {
 
   async getUoms(): Promise<Uom[]> {
     return this.uomRepository.find();
+  }
+
+  async getUomsByName(name: string): Promise<Uom[]> {
+    return this.uomRepository.find({
+      where: { name: ILike(`%${name}%`) },
+    });
   }
 
   async createUom(uomCreateRequestDto: UomCreateRequestDto): Promise<Uom> {
