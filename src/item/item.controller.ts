@@ -24,7 +24,9 @@ export class ItemController {
 
   @Post('/')
   @HttpCode(201)
-  async createItem(itemCreateRequestDto: ItemCreateRequestDto): Promise<Item> {
+  async createItem(
+    @Body() itemCreateRequestDto: ItemCreateRequestDto,
+  ): Promise<Item> {
     return this.itemService.createItem(itemCreateRequestDto);
   }
 

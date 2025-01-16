@@ -15,7 +15,7 @@ export class ItemService {
   }
 
   async createItem(itemCreateRequestDto: ItemCreateRequestDto): Promise<Item> {
-    return this.itemRepository.save(itemCreateRequestDto);
+    return this.itemRepository.create(itemCreateRequestDto);
   }
 
   async getItem(id: string): Promise<Item> {
