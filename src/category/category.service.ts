@@ -32,9 +32,7 @@ export class CategoryService {
     return this.categoryRepository.save({ ...categoryCreateRequestDto, id });
   }
 
-  async deleteCategory(id: string): Promise<Category> {
-    return this.categoryRepository.remove(
-      await this.categoryRepository.findOneBy({ id }),
-    );
+  async deleteCategory(id: string): Promise<void> {
+    await this.categoryRepository.delete({ id });
   }
 }
