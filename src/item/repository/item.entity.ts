@@ -20,10 +20,10 @@ export class Item {
   description: string;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({ name: 'category' })
   category: Category;
 
   @ManyToOne(() => Uom)
-  @JoinColumn({ name: 'uom_id' })
+  @JoinColumn({ name: 'uom' })
   uom: Uom;
 }

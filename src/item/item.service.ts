@@ -11,11 +11,14 @@ export class ItemService {
   ) {}
 
   async getItems(): Promise<Item[]> {
-    return this.itemRepository.find();
+    return this.itemRepository.find({
+      relations: ['category', 'uom'],
+    });
   }
 
   async createItem(itemCreateRequestDto: ItemCreateRequestDto): Promise<Item> {
-    return this.itemRepository.create(itemCreateRequestDto);
+    const item = await this.itemRepository.create(itemCreateRequestDto);
+    return this.itemRepository.save(item);
   }
 
   async getItem(id: string): Promise<Item> {
