@@ -9,5 +9,6 @@ import { Item } from 'src/item/repository/item.entity';
   imports: [TypeOrmModule.forFeature([Uom, Item])],
   controllers: [UomController],
   providers: [UomService],
+  exports: [TypeOrmModule],
 })
 export class UomModule {}

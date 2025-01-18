@@ -11,6 +11,7 @@ import {
 import { ItemService } from './item.service';
 import { Item } from './repository/item.entity';
 import { ItemCreateRequestDto, ItemUpdateRequestDto } from './dto/request.dto';
+import { ItemResponseDto } from './dto/response.dto';
 
 @Controller('item')
 export class ItemController {
@@ -26,7 +27,7 @@ export class ItemController {
   @HttpCode(201)
   async createItem(
     @Body() itemCreateRequestDto: ItemCreateRequestDto,
-  ): Promise<Item> {
+  ): Promise<ItemResponseDto> {
     return this.itemService.createItem(itemCreateRequestDto);
   }
 

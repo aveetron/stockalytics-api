@@ -23,7 +23,7 @@ export class Item {
   @JoinColumn({ name: 'category' })
   category: Category;
 
-  @ManyToOne(() => Uom)
+  @ManyToOne(() => Uom, (uom) => uom.items)
   @JoinColumn({ name: 'uom' })
   uom: Uom;
 }
