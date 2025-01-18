@@ -33,7 +33,7 @@ export class ItemController {
 
   @Get('/:id')
   @HttpCode(200)
-  async getItem(id: string): Promise<Item> {
+  async getItem(id: string): Promise<ItemResponseDto> {
     return this.itemService.getItem(id);
   }
 
@@ -42,13 +42,13 @@ export class ItemController {
   async updateItem(
     @Param('id') id: string,
     @Body() itemUpdateRequestDto: ItemUpdateRequestDto,
-  ): Promise<Item> {
+  ): Promise<ItemResponseDto> {
     return this.itemService.updateItem(id, itemUpdateRequestDto);
   }
 
   @Delete('/:id')
   @HttpCode(200)
-  async deleteItem(id: string): Promise<void> {
+  async deleteItem(@Param('id') id: string): Promise<void> {
     return this.itemService.deleteItem(id);
   }
 }

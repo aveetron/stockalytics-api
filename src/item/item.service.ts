@@ -49,12 +49,31 @@ export class ItemService {
     return ItemResponseDto.fromEntity(item);
   }
 
-  async getItem(id: string): Promise<Item> {
-    return this.itemRepository.findOneBy({ id });
+  async getItem(id: string): Promise<ItemResponseDto> {
+    const item = await this.itemRepository.findOne({
+      where: { id },
+      relations: {
+        uom: true,
+        category: true,
+      },
+    });
+    if (!item) {
+      throw new NotFoundException('Item not found');
+    }
+
+    return ItemResponseDto.fromEntity(item);
   }
 
-  async updateItem(id: string, itemUpdateRequestDto: ItemUpdateRequestDto) {
-    return this.itemRepository.save({ ...itemUpdateRequestDto, id });
+  async updateItem(
+    id: string,
+    itemUpdateRequestDto: ItemUpdateRequestDto,
+  ): Promise<ItemResponseDto> {
+    const item = await this.itemRepository.save({
+      id,
+      ...itemUpdateRequestDto,
+    });
+    console.log(item);
+    return await this.getItem(id);
   }
 
   async deleteItem(id: string): Promise<void> {

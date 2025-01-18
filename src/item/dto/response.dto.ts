@@ -12,7 +12,7 @@ export class ItemResponseDto {
       id: item.id,
       name: item.name,
       description: item.description,
-      uom: item.uom?.id ?? null,
+      uom: item.uom?.name ?? null,
       category: item.category?.name ?? null,
     };
   }
