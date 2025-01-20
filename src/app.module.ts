@@ -10,6 +10,11 @@ import { CategoryModule } from './category/category.module';
 import { Item } from './item/repository/item.entity';
 import { ItemModule } from './item/item.module';
 import { Category } from './category/repository/category.entity';
+import {
+  Purchase,
+  PurchaseDetail,
+} from './purchase/repository/purchase.entity';
+import { PurchaseModule } from './purchase/purchase.module';
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -18,7 +23,7 @@ const dbConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USER || 'admin',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'stockalytics_db',
-  entities: [Uom, Customer, Vendor, Category, Item],
+  entities: [Uom, Customer, Vendor, Category, Item, Purchase, PurchaseDetail],
   synchronize: true,
 };
 
@@ -34,6 +39,7 @@ const dbConfig: TypeOrmModuleOptions = {
     VendorModule,
     CategoryModule,
     ItemModule,
+    PurchaseModule,
   ],
   controllers: [],
   providers: [],
