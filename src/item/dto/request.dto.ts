@@ -11,11 +11,11 @@ export class ItemCreateRequestDto {
 
   @IsUUID()
   @IsNotEmpty()
-  categoryId: string;
+  category: string;
 
   @IsUUID()
   @IsNotEmpty()
-  uomId: string;
+  uom: string;
 }
 
-export class ItemUpdateRequestDto extends ItemCreateRequestDto {}
+export class ItemUpdateRequestDto extends ItemCreateRequestDto { }

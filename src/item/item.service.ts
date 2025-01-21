@@ -16,7 +16,7 @@ export class ItemService {
     private readonly uomRepository: Repository<Uom>,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-  ) {}
+  ) { }
 
   async getItems(): Promise<Item[]> {
     return this.itemRepository.find({
@@ -29,24 +29,27 @@ export class ItemService {
   ): Promise<ItemResponseDto> {
     // First find the related entities
     const category = await this.categoryRepository.findOneBy({
-      id: itemCreateRequestDto.categoryId,
+      id: itemCreateRequestDto.category,
     });
     const uom = await this.uomRepository.findOneBy({
-      id: itemCreateRequestDto.uomId,
+      id: itemCreateRequestDto.uom,
     });
 
     if (!category || !uom) {
       throw new NotFoundException('Category or UOM not found');
     }
 
-    const item = await this.itemRepository.save({
+    const item = this.itemRepository.create({
       name: itemCreateRequestDto.name,
       description: itemCreateRequestDto.description,
-      category,
-      uom,
+      category, // Map to the Category entity
+      uom, // Map to the UOM entity
     });
 
-    return ItemResponseDto.fromEntity(item);
+    const savedItem = await this.itemRepository.save(item);
+
+
+    return ItemResponseDto.fromEntity(savedItem);
   }
 
   async getItem(id: string): Promise<ItemResponseDto> {
@@ -68,12 +71,31 @@ export class ItemService {
     id: string,
     itemUpdateRequestDto: ItemUpdateRequestDto,
   ): Promise<ItemResponseDto> {
-    const item = await this.itemRepository.save({
-      id,
-      ...itemUpdateRequestDto,
+    const item = await this.itemRepository.findOneBy({ id });
+    if (!item) {
+      throw new NotFoundException('Item not found');
+    }
+
+    const category = await this.categoryRepository.findOneBy({
+      id: itemUpdateRequestDto.category,
     });
-    console.log(item);
-    return await this.getItem(id);
+    const uom = await this.uomRepository.findOneBy({
+      id: itemUpdateRequestDto.uom,
+    });
+
+    if (!category || !uom) {
+      throw new NotFoundException('Category or UOM not found');
+    }
+
+    // Update fields
+    item.name = itemUpdateRequestDto.name;
+    item.description = itemUpdateRequestDto.description;
+    item.category = category;
+    item.uom = uom;
+
+    const updatedItem = await this.itemRepository.save(item);
+
+    return ItemResponseDto.fromEntity(updatedItem);
   }
 
   async deleteItem(id: string): Promise<void> {

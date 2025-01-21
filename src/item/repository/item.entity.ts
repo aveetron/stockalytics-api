@@ -19,11 +19,15 @@ export class Item {
   @Column()
   description: string;
 
-  @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category' })
+  // @ManyToOne(() => Category)
+  // @JoinColumn({ name: 'category' })
+  // category: Category;
+
+  @ManyToOne(() => Category, (category) => category.items)
+  @JoinColumn({ name: 'categoryId' }) // Match DTO and database column
   category: Category;
 
   @ManyToOne(() => Uom, (uom) => uom.items)
-  @JoinColumn({ name: 'uom' })
+  @JoinColumn({ name: 'uomId' })
   uom: Uom;
 }
