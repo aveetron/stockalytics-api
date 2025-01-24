@@ -15,18 +15,18 @@ export class Purchase {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  total: number;
-
   @ManyToOne(() => Vendor, (vendor) => vendor.purchases)
   @JoinColumn({ name: 'vendorId' })
   vendor: Vendor;
+
+  @Column({ default: false })
+  isPaid: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @OneToMany(() => PurchaseDetail, (purchaseDetail) => purchaseDetail.purchase)
-  purchaseDetails: PurchaseDetail[];
+  details: PurchaseDetail[];
 }
 
 @Entity('purchase_detail')
@@ -35,11 +35,8 @@ export class PurchaseDetail {
   id: string;
 
   @ManyToOne(() => Item)
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'itemId' })
   item: Item;
-
-  @Column()
-  itemId: number;
 
   @Column('int')
   qty: number;
@@ -47,7 +44,7 @@ export class PurchaseDetail {
   @Column('decimal', { precision: 10, scale: 2 })
   unitPrice: number;
 
-  @ManyToOne(() => Purchase, (purchase) => purchase.purchaseDetails)
+  @ManyToOne(() => Purchase, (purchase) => purchase.details)
   @JoinColumn({ name: 'purchaseId' })
   purchase: Purchase;
 }

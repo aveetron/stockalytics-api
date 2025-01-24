@@ -1,7 +1,17 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsUUID, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 
 export class CreatePurchaseDetailDTO {
+  @IsNotEmpty()
+  @IsUUID()
+  purchaseId: string;
+
   @IsNotEmpty()
   @IsUUID()
   itemId: string;
@@ -17,14 +27,14 @@ export class CreatePurchaseDetailDTO {
 
 export class CreatePurchaseDTO {
   @IsNotEmpty()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  total: number;
-
-  @IsNotEmpty()
   @IsUUID()
   vendorId: string;
 
+  @IsNotEmpty()
+  @IsBoolean()
+  isPaid: boolean;
+
   @ValidateNested({ each: true })
   @Type(() => CreatePurchaseDetailDTO)
-  purchaseDetails: CreatePurchaseDetailDTO[];
+  details: CreatePurchaseDetailDTO[];
 }
