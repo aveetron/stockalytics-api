@@ -15,4 +15,14 @@ export class UomResponseDto {
 
 export class UomListResponseDto extends PaginationResponseDto {
   uoms: UomResponseDto[];
+
+  constructor(
+    start: number,
+    limit: number,
+    total: number,
+    uoms: UomResponseDto[],
+  ) {
+    super(start, limit, total);
+    this.uoms = uoms;
+  }
 }
