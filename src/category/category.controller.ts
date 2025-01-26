@@ -15,8 +15,10 @@ import {
   CategoryRequestDto,
   CategoryUpdateRequestDto,
 } from './dto/request.dto';
-import { Category } from './repository/category.entity';
-import { CategoryListResponseDto } from './dto/response.dto';
+import {
+  CategoryListResponseDto,
+  CategoryResponseDto,
+} from './dto/response.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -34,13 +36,13 @@ export class CategoryController {
   @HttpCode(201)
   async createCategory(
     @Body() categoryCreateRequestDto: CategoryCreateRequestDto,
-  ): Promise<Category> {
+  ): Promise<CategoryResponseDto> {
     return this.categoryService.createCategory(categoryCreateRequestDto);
   }
 
   @Get('/:id')
   @HttpCode(200)
-  async getCategory(@Param('id') id: string): Promise<Category> {
+  async getCategory(@Param('id') id: string): Promise<CategoryResponseDto> {
     return this.categoryService.getCategory(id);
   }
 
@@ -49,7 +51,7 @@ export class CategoryController {
   async updateCategory(
     @Param('id') id: string,
     @Body() categoryUpdateRequestDto: CategoryUpdateRequestDto,
-  ): Promise<Category> {
+  ): Promise<CategoryResponseDto> {
     return this.categoryService.updateCategory(id, categoryUpdateRequestDto);
   }
 

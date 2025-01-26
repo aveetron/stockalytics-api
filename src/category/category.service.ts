@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Category } from './repository/category.entity';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   CategoryCreateRequestDto,
   CategoryRequestDto,
+  CategoryUpdateRequestDto,
 } from './dto/request.dto';
 import {
   CategoryListResponseDto,
@@ -51,23 +52,49 @@ export class CategoryService {
 
   async createCategory(
     categoryCreateRequestDto: CategoryCreateRequestDto,
-  ): Promise<Category> {
-    return this.categoryRepository.save(categoryCreateRequestDto);
+  ): Promise<CategoryResponseDto> {
+    // check this name exists or not
+    const existingCategory = await this.categoryRepository.findOneBy({
+      name: categoryCreateRequestDto.name,
+    });
+    if (existingCategory) {
+      throw new BadRequestException('Category already exists');
+    }
+    return CategoryResponseDto.fromEntity(
+      await this.categoryRepository.save(categoryCreateRequestDto),
+    );
   }
 
-  async getCategory(id: string): Promise<Category> {
-    return this.categoryRepository.findOneBy({ id });
+  async getCategory(id: string): Promise<CategoryResponseDto> {
+    const category = await this.categoryRepository.findOneBy({ id });
+    return CategoryResponseDto.fromEntity(category);
   }
 
   async updateCategory(
     id: string,
-    categoryCreateRequestDto: CategoryCreateRequestDto,
-  ): Promise<Category> {
-    const category = await this.categoryRepository.findOneBy({ id });
-    category.name = categoryCreateRequestDto?.name;
-    category.description = categoryCreateRequestDto?.description;
-    await this.categoryRepository.save(category);
-    return this.categoryRepository.findOneBy({ id });
+    categoryUpdateRequestDto: CategoryUpdateRequestDto,
+  ): Promise<CategoryResponseDto> {
+    // check if category payload is empty
+    if (Object.keys(categoryUpdateRequestDto).length === 0) {
+      throw new BadRequestException('Category payload is empty');
+    }
+
+    // check this name already exists or not
+    if (categoryUpdateRequestDto.name) {
+      categoryUpdateRequestDto.name = categoryUpdateRequestDto.name.trim();
+      const existingCategory = await this.categoryRepository.findOneBy({
+        name: categoryUpdateRequestDto.name,
+      });
+      if (existingCategory) {
+        throw new BadRequestException('Category already exists');
+      }
+    }
+
+    const category = await this.categoryRepository.save({
+      ...(await this.categoryRepository.findOneBy({ id })),
+      ...categoryUpdateRequestDto,
+    });
+    return CategoryResponseDto.fromEntity(category);
   }
 
   async deleteCategory(id: string): Promise<void> {
