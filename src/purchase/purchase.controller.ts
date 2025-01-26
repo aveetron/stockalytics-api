@@ -10,7 +10,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
-import { Purchase } from './repository/purchase.entity';
 import { PurchaseResponseDto } from './dto/response.dto';
 import { CreatePurchaseDTO } from './dto/request.dto';
 
