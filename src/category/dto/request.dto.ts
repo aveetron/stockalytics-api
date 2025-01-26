@@ -23,9 +23,5 @@ export class CategoryUpdateRequestDto {
 export class CategoryRequestDto extends PaginationRequestDto {
   @IsOptional()
   @IsString()
-  name: string;
-
-  @IsOptional()
-  @IsString()
-  description: string;
+  search: string;
 }

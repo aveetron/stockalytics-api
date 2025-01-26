@@ -7,13 +7,16 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {
   CategoryCreateRequestDto,
+  CategoryRequestDto,
   CategoryUpdateRequestDto,
 } from './dto/request.dto';
 import { Category } from './repository/category.entity';
+import { CategoryListResponseDto } from './dto/response.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -21,8 +24,10 @@ export class CategoryController {
 
   @Get('/')
   @HttpCode(200)
-  async getCategories(): Promise<Category[]> {
-    return this.categoryService.getCategories();
+  async getCategories(
+    @Query() categoryRequestDto: CategoryRequestDto,
+  ): Promise<CategoryListResponseDto> {
+    return this.categoryService.getCategories(categoryRequestDto);
   }
 
   @Post('/')

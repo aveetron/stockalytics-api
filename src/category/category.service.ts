@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Category } from './repository/category.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryCreateRequestDto } from './dto/request.dto';
+import {
+  CategoryCreateRequestDto,
+  CategoryRequestDto,
+} from './dto/request.dto';
+import {
+  CategoryListResponseDto,
+  CategoryResponseDto,
+} from './dto/response.dto';
 
 @Injectable()
 export class CategoryService {
@@ -11,8 +18,35 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async getCategories(): Promise<Category[]> {
-    return this.categoryRepository.find();
+  async getCategories(
+    categoryRequestDto: CategoryRequestDto,
+  ): Promise<CategoryListResponseDto> {
+    const [categories, total] = await this.categoryRepository.findAndCount({
+      // check if search is not empty
+      ...(categoryRequestDto.search && {
+        where: [
+          {
+            name: ILike(`%${categoryRequestDto.search}%`),
+          },
+          {
+            description: ILike(`%${categoryRequestDto.search}%`),
+          },
+        ],
+      }),
+      skip: categoryRequestDto.start,
+      take: categoryRequestDto.limit,
+    });
+
+    const categoryDtos = categories.map((category) =>
+      CategoryResponseDto.fromEntity(category),
+    );
+
+    return new CategoryListResponseDto(
+      categoryRequestDto.start,
+      categoryRequestDto.limit,
+      total,
+      categoryDtos,
+    );
   }
 
   async createCategory(

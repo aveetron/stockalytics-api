@@ -42,11 +42,11 @@ export class StockCreateRequestDto {
   @IsDecimal()
   qty: number;
 
-  @IsNotEmpty({ message: 'Qty cannot be empty' })
+  @IsNotEmpty({ message: 'Buying price cannot be empty' })
   @IsDecimal()
   buyingPrice: number;
 
-  @IsNotEmpty({ message: 'Qty cannot be empty' })
+  @IsNotEmpty({ message: 'Selling price cannot be empty' })
   @IsDecimal()
   sellingPrice: number;
 
