@@ -18,4 +18,20 @@ export class ItemCreateRequestDto {
   uomId: string;
 }
 
-export class ItemUpdateRequestDto extends ItemCreateRequestDto {}
+export class ItemUpdateRequestDto {
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  description: string;
+
+  @IsUUID()
+  @IsOptional()
+  categoryId: string;
+
+  @IsUUID()
+  @IsOptional()
+  uomId: string;
+}
