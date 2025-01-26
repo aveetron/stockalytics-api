@@ -20,7 +20,7 @@ export class PurchaseController {
 
   @Get('/')
   @HttpCode(200)
-  public async getPurchases(): Promise<Purchase[]> {
+  public async getPurchases(): Promise<PurchaseResponseDto[]> {
     return this.purchaseService.getPurchases();
   }
 

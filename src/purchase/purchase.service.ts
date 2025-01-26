@@ -20,8 +20,13 @@ export class PurchaseService {
     private readonly itemRepository: Repository<Item>,
   ) {}
 
-  async getPurchases(): Promise<Purchase[]> {
-    return this.purchaseRepository.find();
+  async getPurchases(): Promise<PurchaseResponseDto[]> {
+    const purchases = await this.purchaseRepository.find({
+      relations: ['details', 'details.item', 'vendor'],
+    });
+    return purchases.map((purchase) =>
+      PurchaseResponseDto.fromEntity(purchase),
+    );
   }
 
   async createPurchase(
@@ -68,6 +73,7 @@ export class PurchaseService {
 
       const fullPurchase = await this.purchaseRepository.findOne({
         where: { id: purchase.id },
+        relations: ['details', 'details.item', 'vendor'],
       });
 
       return PurchaseResponseDto.fromEntity(fullPurchase);
@@ -93,6 +99,7 @@ export class PurchaseService {
   }
 
   async deletePurchase(id: string): Promise<void> {
+    await this.purchaseDetailRepository.delete({ purchase: { id } });
     await this.purchaseRepository.delete({ id });
   }
 }
