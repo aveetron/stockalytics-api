@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -27,6 +29,16 @@ export class PurchaseController {
   public async createPurchase(
     @Body() createPurchaseDTO: CreatePurchaseDTO,
   ): Promise<PurchaseResponseDto> {
+    // check if vendor id is not empty
+    if (!createPurchaseDTO.vendorId) {
+      throw new BadRequestException('Vendor ID cannot be empty');
+    }
+
+    // check if purchase details is not empty
+    if (!createPurchaseDTO.details || createPurchaseDTO.details.length === 0) {
+      throw new BadRequestException('Purchase details cannot be empty');
+    }
+
     return this.purchaseService.createPurchase(createPurchaseDTO);
   }
 
@@ -42,5 +54,11 @@ export class PurchaseController {
   @HttpCode(200)
   public async payBill(@Param('id') id: string): Promise<PurchaseResponseDto> {
     return this.purchaseService.payBill(id);
+  }
+
+  @Delete('/:id')
+  @HttpCode(200)
+  public async deletePurchase(@Param('id') id: string): Promise<void> {
+    this.purchaseService.deletePurchase(id);
   }
 }

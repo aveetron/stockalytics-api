@@ -16,16 +16,23 @@ export class Purchase {
   id: string;
 
   @ManyToOne(() => Vendor, (vendor) => vendor.purchases)
-  @JoinColumn({ name: 'vendorId' })
+  @JoinColumn({ name: 'vendor_id' })
   vendor: Vendor;
 
   @Column({ default: false })
   isPaid: boolean;
 
+  @Column({ default: false })
+  isQcPassed: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => PurchaseDetail, (purchaseDetail) => purchaseDetail.purchase)
+  @OneToMany(
+    () => PurchaseDetail,
+    (purchaseDetail) => purchaseDetail.purchase,
+    { cascade: true, onDelete: 'CASCADE' },
+  )
   details: PurchaseDetail[];
 }
 
@@ -35,16 +42,16 @@ export class PurchaseDetail {
   id: string;
 
   @ManyToOne(() => Item)
-  @JoinColumn({ name: 'itemId' })
+  @JoinColumn({ name: 'item_id' })
   item: Item;
 
-  @Column('int')
+  @Column('int', { default: 0 })
   qty: number;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', { precision: 10, scale: 2, default: 0 })
   unitPrice: number;
 
   @ManyToOne(() => Purchase, (purchase) => purchase.details)
-  @JoinColumn({ name: 'purchaseId' })
+  @JoinColumn({ name: 'purchase_id' })
   purchase: Purchase;
 }

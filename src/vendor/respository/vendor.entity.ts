@@ -12,7 +12,7 @@ export class Vendor {
   @Column({ unique: true })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   address: string;
 
   @OneToMany(() => Purchase, (purchase) => purchase.vendor)

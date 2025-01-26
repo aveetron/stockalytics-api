@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { PaginationRequestDto } from 'src/types/pagination';
 
 export class UomCreateRequestDto {
@@ -10,6 +10,6 @@ export class UomCreateRequestDto {
 export class UomUpdateRequestDto extends UomCreateRequestDto {}
 
 export class UomRequestDto extends PaginationRequestDto {
-  @IsString({ message: 'Name must be a string' })
+  @IsOptional()
   name: string;
 }

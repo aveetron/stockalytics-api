@@ -1,16 +1,18 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
 
 export class CreatePurchaseDetailDTO {
-  @IsNotEmpty()
-  @IsUUID()
-  purchaseId: string;
+  // @IsNotEmpty()
+  // @IsUUID()
+  // purchaseId: string;
 
   @IsNotEmpty()
   @IsUUID()
@@ -30,11 +32,17 @@ export class CreatePurchaseDTO {
   @IsUUID()
   vendorId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
   isPaid: boolean;
 
+  @IsOptional()
+  @IsBoolean()
+  isQcPassed: boolean;
+
+  @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => CreatePurchaseDetailDTO)
+  @ArrayNotEmpty()
   details: CreatePurchaseDetailDTO[];
 }

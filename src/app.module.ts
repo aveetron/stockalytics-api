@@ -15,6 +15,7 @@ import {
   PurchaseDetail,
 } from './purchase/repository/purchase.entity';
 import { PurchaseModule } from './purchase/purchase.module';
+import { StockModule } from './stock/stock.module';
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -40,6 +41,7 @@ const dbConfig: TypeOrmModuleOptions = {
     CategoryModule,
     ItemModule,
     PurchaseModule,
+    StockModule,
   ],
   controllers: [],
   providers: [],
