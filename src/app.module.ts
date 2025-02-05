@@ -16,6 +16,8 @@ import {
 } from './purchase/repository/purchase.entity';
 import { PurchaseModule } from './purchase/purchase.module';
 import { StockModule } from './stock/stock.module';
+import { AuthModule } from './auth/auth.module';
+import { Auth } from './auth/repository/auth.entity';
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -24,7 +26,16 @@ const dbConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USER || 'admin',
   password: process.env.DB_PASSWORD || 'password',
   database: process.env.DB_NAME || 'stockalytics_db',
-  entities: [Uom, Customer, Vendor, Category, Item, Purchase, PurchaseDetail],
+  entities: [
+    Uom,
+    Customer,
+    Vendor,
+    Category,
+    Item,
+    Purchase,
+    PurchaseDetail,
+    Auth,
+  ],
   synchronize: true,
 };
 
@@ -42,6 +53,7 @@ const dbConfig: TypeOrmModuleOptions = {
     ItemModule,
     PurchaseModule,
     StockModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
